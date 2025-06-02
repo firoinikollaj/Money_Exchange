@@ -1,0 +1,63 @@
+# ----------------------------------
+# React / Node / Vite ignores
+# ----------------------------------
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ----------------------------------
+# ASP.NET Core / .NET ignores
+# ----------------------------------
+
+# Build artifacts
+bin/
+obj/
+artifacts/
+publish/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# IIS/Dev server
+*.vs/
+.vs/
+
+# ASP.NET secrets
+secrets.json
+
+# Test results
+TestResult.xml
+TestResults/
+
+# Local database
+*.dbmdl
+
+# Other
+*.pidb
+*.pid
+*.mdb
+*.cache
+*.pdb
