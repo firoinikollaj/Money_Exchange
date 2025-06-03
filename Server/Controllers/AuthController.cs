@@ -40,8 +40,15 @@ namespace Server.Controllers
             await _context.SaveChangesAsync();
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token });
+
+            return Ok(new
+            {
+                token,
+                email = user.Email,
+                role = user.Role
+            });
         }
+
 
 
         [HttpPost]
@@ -52,8 +59,14 @@ namespace Server.Controllers
                 return Unauthorized("Invalid credentials.");
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token });
+            return Ok(new
+            {
+                token,
+                email = user.Email,
+                role = user.Role
+            });
         }
+
 
         [HttpPost]
         public IActionResult ForgotPassword([FromBody] string email)

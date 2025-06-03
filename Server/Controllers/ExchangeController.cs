@@ -87,5 +87,22 @@ namespace Server.Controllers
                 rate = rate.Rate
             });
         }
+
+        [HttpGet]
+        public IActionResult AllRates()
+        {
+            var result = _context.ConversionRates
+                .Select(r => new {
+                    From = r.FromCurrency.Code,
+                    FromCountry = r.FromCurrency.CountryCode,
+                    To = r.ToCurrency.Code,
+                    ToCountry = r.ToCurrency.CountryCode,
+                    Rate = r.Rate.ToString("0.###")
+                }).ToList();
+
+            return Ok(result);
+        }
+
+
     }
 }
