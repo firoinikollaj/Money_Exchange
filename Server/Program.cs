@@ -1,4 +1,9 @@
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Server.Entities;
+using System.Text;
+
 namespace Server
 {
     public class Program
@@ -24,6 +29,24 @@ namespace Server
                 });
             });
 
+            builder.Services.AddDbContext<CurrencyExchangeDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+            builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
             var app = builder.Build();
 
@@ -39,6 +62,7 @@ namespace Server
             app.UseCors("AllowAll");
 
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
