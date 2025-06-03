@@ -5,36 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{2FFA49C5-F004-4044-AB87-2C7CECFE100E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-	ProjectSection(SolutionItems) = preProject
-		Client\.gitignore = Client\.gitignore
-		Client\eslint.config.js = Client\eslint.config.js
-		Client\index.html = Client\index.html
-		Client\package-lock.json = Client\package-lock.json
-		Client\package.json = Client\package.json
-		Client\postcss.config.cjs = Client\postcss.config.cjs
-		Client\README.md = Client\README.md
-		Client\tailwind.config.js = Client\tailwind.config.js
-		Client\vite.config.js = Client\vite.config.js
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A5D03161-6E1B-413A-8283-34389511769B}"
-	ProjectSection(SolutionItems) = preProject
-		Client\src\App.css = Client\src\App.css
-		Client\src\App.jsx = Client\src\App.jsx
-		Client\src\index.css = Client\src\index.css
-		Client\src\main.jsx = Client\src\main.jsx
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{640563A5-35D5-4EB1-8441-4C85B398E3D7}"
-	ProjectSection(SolutionItems) = preProject
-		Client\src\assets\react.svg = Client\src\assets\react.svg
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "public", "public", "{921B3BC5-1672-45B0-B53C-9A6F2488B675}"
-	ProjectSection(SolutionItems) = preProject
-		Client\public\vite.svg = Client\public\vite.svg
-	EndProjectSection
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Client", "Client\Client.esproj", "{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,14 +17,15 @@ Global
 		{2FFA49C5-F004-4044-AB87-2C7CECFE100E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFA49C5-F004-4044-AB87-2C7CECFE100E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFA49C5-F004-4044-AB87-2C7CECFE100E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC3FCCF-9129-207D-CAD8-1B96C9FA47E2}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A5D03161-6E1B-413A-8283-34389511769B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{640563A5-35D5-4EB1-8441-4C85B398E3D7} = {A5D03161-6E1B-413A-8283-34389511769B}
-		{921B3BC5-1672-45B0-B53C-9A6F2488B675} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D982DC3-852C-455B-99F5-8DA036B06D83}
