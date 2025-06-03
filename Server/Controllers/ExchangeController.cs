@@ -26,12 +26,15 @@ namespace Server.Controllers
                 {
                     c.Id,
                     c.Code,
-                    c.CountryCode
+                    c.CountryCode,
+                    c.Symbol,
+                    c.Name
                 })
                 .ToList();
 
             return Ok(currencies);
         }
+
 
         // 🔁 Get rate between two currencies
         [HttpGet]
@@ -102,6 +105,7 @@ namespace Server.Controllers
 
             return Ok(result);
         }
+       
 
 
     }

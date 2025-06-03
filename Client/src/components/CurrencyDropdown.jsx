@@ -5,16 +5,19 @@ import { ChevronUpDownIcon } from "@heroicons/react/20/solid";
 const getFlagUrl = (countryCode) =>
   `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 
-export default function CurrencyDropdown({ value, onChange, options }) {
+export default function CurrencyDropdown({ value, onChange, options, disabled }) {
   const selectedOption = options.find((opt) => opt.code === value);
 
   return (
     <div>
       <label className="text-sm font-medium text-gray-600">Currency</label>
-      <Listbox value={value} onChange={onChange}>
+          <Listbox value={value} onChange={disabled ? () => { } : onChange}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left border text-sm shadow-md focus:outline-none">
-            <span className="flex items-center gap-2">
+                  <Listbox.Button
+                      className={`relative w-full cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left border text-sm shadow-md focus:outline-none ${disabled ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                  >
+                      <span className="flex items-center gap-2 text-black">
               {selectedOption && (
                 <img
                   src={getFlagUrl(selectedOption.countryCode)}

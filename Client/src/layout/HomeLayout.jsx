@@ -3,17 +3,19 @@ import { useEffect, useState } from "react";
 
 export default function HomeLayout() {
     const [email, setEmail] = useState(localStorage.getItem("email"));
+    const [role, setRole] = useState(localStorage.getItem("role"));
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
-        const storedEmail = localStorage.getItem("email");
-        setEmail(storedEmail);
+        setEmail(localStorage.getItem("email"));
+        setRole(localStorage.getItem("role"));
     }, [location]);
 
     const handleLogout = () => {
         localStorage.clear();
         setEmail(null);
+        setRole(null);
         navigate("/login");
     };
 
@@ -32,6 +34,16 @@ export default function HomeLayout() {
                             <span className="text-white font-medium break-all">
                                 Welcome, <span className="text-blue-300">{email}</span>
                             </span>
+
+                            {role === "Admin" && (
+                                <Link
+                                    to="/admin"
+                                    className="bg-yellow-600 hover:bg-yellow-600 text-white px-4 py-1 rounded-full transition shadow-sm hover:shadow-md text-sm text-center whitespace-nowrap"
+                                >
+                                    Admin Panel
+                                </Link>
+                            )}
+
                             <button
                                 onClick={handleLogout}
                                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full transition shadow-sm hover:shadow-md text-sm"

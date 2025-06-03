@@ -13,6 +13,10 @@ public partial class Currencies
 
     public string CountryCode { get; set; }
 
+    public string Symbol { get; set; }
+
+    public string Name { get; set; }
+
     public virtual ICollection<ConversionRates> ConversionRatesFromCurrency { get; set; } = new List<ConversionRates>();
 
     public virtual ICollection<ConversionRates> ConversionRatesToCurrency { get; set; } = new List<ConversionRates>();

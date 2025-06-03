@@ -13,6 +13,8 @@ public partial class CurrencyExchangeDbContext : DbContext
     {
     }
 
+    public virtual DbSet<AllCurrencies> AllCurrencies { get; set; }
+
     public virtual DbSet<ConversionRates> ConversionRates { get; set; }
 
     public virtual DbSet<Currencies> Currencies { get; set; }
@@ -21,6 +23,18 @@ public partial class CurrencyExchangeDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AllCurrencies>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__AllCurre__3214EC07FD75A397");
+
+            entity.Property(e => e.Code)
+                .IsRequired()
+                .HasMaxLength(10);
+            entity.Property(e => e.CountryCode).HasMaxLength(5);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Symbol).HasMaxLength(10);
+        });
+
         modelBuilder.Entity<ConversionRates>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Conversi__3214EC071663788E");
@@ -52,6 +66,8 @@ public partial class CurrencyExchangeDbContext : DbContext
             entity.Property(e => e.CountryCode)
                 .IsRequired()
                 .HasMaxLength(10);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Symbol).HasMaxLength(10);
         });
 
         modelBuilder.Entity<Users>(entity =>
