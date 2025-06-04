@@ -25,13 +25,6 @@ export default function AddEditCurrency() {
         navigate("/admin", { state: { goToTab: "currencies" } });
     };
 
-    useEffect(() => {
-        console.log("selectedCurrencyCode:", selectedCurrencyCode);
-        console.log("available codes:", allCurrencies.map(c => c.code));
-
-        const match = allCurrencies.find(c => c.code.toLowerCase().trim() === selectedCurrencyCode?.toLowerCase()?.trim());
-        console.log("MATCH FOUND:", match);
-    }, [allCurrencies, selectedCurrencyCode]);
 
     useEffect(() => {
         if (!isEditMode && selectedCurrencyCode) {
@@ -61,8 +54,17 @@ export default function AddEditCurrency() {
     useEffect(() => {
         const init = async () => {
             try {
+                const token = localStorage.getItem("token");
+
                 const [allRes, existingRes] = await Promise.all([
-                    axios.get(`${API_BASE}/Admin/AllCurrencies${currencyId ? `?currencyId=${currencyId}` : ""}`),
+                    axios.get(
+                        `${API_BASE}/Admin/AllCurrencies${currencyId ? `?currencyId=${currencyId}` : ""}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    ),
                     axios.get(`${API_BASE}/Exchange/Currencies`)
                 ]);
 
@@ -78,7 +80,11 @@ export default function AddEditCurrency() {
 
                     setSelectedCurrencyCode(existingCurrency.code);
 
-                    const convRes = await axios.get(`${API_BASE}/Admin/ConversionsFor?currencyId=${currencyId}`);
+                    const convRes = await axios.get(`${API_BASE}/Admin/ConversionsFor?currencyId=${currencyId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
                     const existingRates = convRes.data;
 
                     // Build pairs for both directions (existing only)

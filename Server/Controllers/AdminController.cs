@@ -6,6 +6,7 @@ using Server.Models;
 
 namespace Server.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AdminController : ControllerBase
@@ -17,17 +18,25 @@ namespace Server.Controllers
             _context = context;
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        
         public IActionResult Users()
         {
+            var userIdClaim = User.FindFirst("userId")?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int loggedInUserId))
+            {
+                return Unauthorized("Invalid user ID in token.");
+            }
+
             var users = _context.Users
-                .Select(u => new
-                {
-                    u.Id,
-                    u.Email,
-                    u.Role
-                })
-                .ToList();
+         .Where(u => u.Id != loggedInUserId)
+         .Select(u => new
+         {
+             u.Id,
+             u.Email,
+             u.Role
+         })
+         .ToList();
 
             return Ok(users);
         }
@@ -180,6 +189,94 @@ namespace Server.Controllers
             _context.SaveChanges();
 
             return Ok("Currency and related conversions deleted.");
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser([FromQuery] int id)
+        {
+            // Find the currency by ID
+            var user = _context.Users.FirstOrDefault(c => c.Id == id);
+            if (user == null)
+                return NotFound("User not found.");
+
+            _context.Users.Remove(user);
+
+            _context.SaveChanges();
+
+            return Ok("User deleted successfully!");
+        }
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult CheckEmailExists(string email)
+        {
+            var exists = _context.Users.Any(u => u.Email.ToLower() == email.ToLower());
+            return Ok(new { exists });
+        }
+        [HttpPost]
+        public IActionResult AddEditUser([FromQuery]int userId, [FromBody] AddEditUserDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Role))
+                return BadRequest("Invalid request data.");
+
+            var role = dto.Role.Trim();
+            if (role != "Admin" && role != "User")
+                return BadRequest("Role must be either 'Admin' or 'User'.");
+
+            if (userId == 0)
+            {
+                // ADD USER
+                if (_context.Users.Any(u => u.Email.ToLower() == dto.Email.ToLower()))
+                    return BadRequest("A user with this email already exists.");
+
+                var user = new Users
+                {
+                    Email = dto.Email.Trim(),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    Role = role
+                };
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return Ok("User added successfully.");
+            }
+            else
+            {
+                // UPDATE USER
+                var existing = _context.Users.FirstOrDefault(u => u.Id == userId);
+                if (existing == null)
+                    return NotFound("User not found.");
+
+                if (!string.IsNullOrWhiteSpace(dto.Password))
+                {
+                    existing.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+                }
+                existing.Role = role;
+                _context.SaveChanges();
+                return Ok("User updated successfully.");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult GeneratePassword([FromQuery]int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+                return NotFound("User not found.");
+
+            var newPassword = GenerateRandomPassword();
+            // Optional: Hash and save it
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            _context.SaveChanges();
+
+            return Ok(newPassword);
+        }
+
+        private string GenerateRandomPassword(int length = 10)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
     }

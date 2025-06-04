@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -37,7 +39,6 @@ export default function LoginPage() {
         }
     };
 
-
     return (
         <div className="flex items-start justify-center min-h-screen bg-[#0a1c50] px-4 mt-10 sm:mt-20">
             <div className="bg-white text-black rounded-2xl shadow-xl w-full max-w-lg p-10">
@@ -52,21 +53,27 @@ export default function LoginPage() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@example.com"
                             className={`w-full mt-1 px-4 py-3 border rounded-lg transition ${email && !isValidEmail
-                                    ? "border-red-500 border-2 focus:outline-none"
-                                    : "border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                ? "border-red-500 border-2 focus:outline-none"
+                                : "border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 }`}
                         />
-
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <label className="text-sm font-medium text-gray-700">Password</label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-10 text-gray-500 hover:text-gray-700"
+                        >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
                     </div>
 
                     {error && (
@@ -78,8 +85,8 @@ export default function LoginPage() {
                             onClick={handleLogin}
                             disabled={!isFormValid || loading}
                             className={`w-full py-3 rounded-lg font-semibold transition flex items-center justify-center ${isFormValid && !loading
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                    : "bg-gray-400 text-white cursor-not-allowed"
+                                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                : "bg-gray-400 text-white cursor-not-allowed"
                                 }`}
                         >
                             {loading ? (

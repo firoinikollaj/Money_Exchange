@@ -21,7 +21,6 @@ export default function Currencies() {
 
     const [reloadCurrencies, setReloadCurrencies] = useState(false);
 
-    const handleReloadCurrencies = () => setReloadCurrencies(prev => !prev);
     const navigate = useNavigate();
 
 
@@ -91,16 +90,15 @@ export default function Currencies() {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
-    const handleBackToCurrencies = () => {
-        console.log("true");
-        setActiveTab("currencies");
-        handleReloadCurrencies();  // this will force re-render
-    };
     const handleDeleteCurrency = (id, code) => {
         showConfirmToast({
             message: `Are you sure you want to delete currency "${code}"?`,
             onConfirm: () =>
-                axios.delete(`https://localhost:7121/api/Admin/DeleteCurrency?id=${id}`),
+                axios.delete(`https://localhost:7121/api/Admin/DeleteCurrency?id=${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                }),
             onsuccessClickMessage: "Currency deleted successfully!",
             onSuccessCallback: fetchCurrencies
         });

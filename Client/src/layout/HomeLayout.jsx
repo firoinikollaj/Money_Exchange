@@ -21,24 +21,25 @@ export default function HomeLayout() {
 
     return (
         <div className="min-h-screen bg-[#0a1c50] text-white font-sans">
-            <header className="flex flex-col sm:flex-row justify-between sm:items-center px-6 py-4 shadow-md space-y-3 sm:space-y-0">
+            <header className="flex flex-col sm:flex-row items-center justify-between px-6 py-4 shadow-lg bg-[#0a1c50] border-b border-blue-900">
                 {/* Logo */}
-                <Link to="/" className="hover:underline">
-                    <img src="/globex.png" alt="Globex Logo" className="h-16 w-24" />
+                <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition">
+                    <img src="/globex.png" alt="Globex Logo" className="h-14 w-28" />
                 </Link>
 
                 {/* Navigation */}
-                <nav className="w-full sm:w-auto flex flex-col sm:flex-row sm:items-center sm:justify-end text-sm gap-2 sm:gap-6 text-right">
+                <nav className="mt-4 sm:mt-0 flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
                     {email ? (
-                        <div className="w-full sm:w-auto flex flex-col sm:flex-row sm:items-center sm:gap-4 items-end sm:items-center text-right sm:text-left">
-                            <span className="text-white font-medium break-all">
-                                Welcome, <span className="text-blue-300">{email}</span>
-                            </span>
+                        <>
+                            <div className="text-sm text-white text-center sm:text-left">
+                                <div className="text-xs sm:text-sm opacity-70">Logged in as</div>
+                                <div className="font-semibold text-blue-200 break-all">{email}</div>
+                            </div>
 
                             {role === "Admin" && (
                                 <Link
                                     to="/admin"
-                                    className="bg-yellow-600 hover:bg-yellow-600 text-white px-4 py-1 rounded-full transition shadow-sm hover:shadow-md text-sm text-center whitespace-nowrap"
+                                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-full shadow transition whitespace-nowrap text-sm"
                                 >
                                     Admin Panel
                                 </Link>
@@ -46,25 +47,33 @@ export default function HomeLayout() {
 
                             <button
                                 onClick={handleLogout}
-                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-full transition shadow-sm hover:shadow-md text-sm"
+                                className="bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-full shadow transition text-sm"
                             >
                                 Logout
                             </button>
-                        </div>
+                        </>
                     ) : (
-                        <div className="flex flex-row flex-wrap justify-end items-center gap-2 sm:gap-4">
-                            <Link to="/login" className="hover:underline whitespace-nowrap">Login</Link>
-                            <Link to="/register">
-                                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded whitespace-nowrap">
-                                    Register
-                                </button>
-                            </Link>
-                        </div>
+                        <>
+                                <div className="flex gap-2 sm:gap-3">
+                                    <Link to="/login">
+                                        <button className="px-8 py-2 text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 border border-blue-500 rounded-full shadow transition duration-150">
+                                            Login
+                                        </button>
+                                    </Link>
+
+                                    <Link to="/register">
+                                        <button className="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-full shadow transition duration-150">
+                                            Register
+                                        </button>
+                                    </Link>
+                                </div>
+
+                        </>
                     )}
                 </nav>
             </header>
 
-            <main className="flex flex-col items-center justify-center px-4 py-20">
+            <main className="flex flex-col items-center justify-center px-4 py-10 sm:py-20">
                 <Outlet />
             </main>
         </div>
