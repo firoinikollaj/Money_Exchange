@@ -1,0 +1,38 @@
+Project Setup: Money Exchange Application (GlobeX)
+This Money Exchange application is built with a React frontend and a .NET backend. To run the project locally, follow the instructions below:
+
+# Frontend
+
+- Visual Studio Code
+  A lightweight and powerful source-code editor used to develop and run the frontend React app.
+
+- Node.js (with npm)
+  Required to manage frontend dependencies and run the React development server.
+
+# Backend
+
+- Visual Studio (Community Edition or higher)
+  An integrated development environment (IDE) for building and running the .NET backend application.
+
+- SQL Server
+  The backend uses a SQL Server database for data persistence.
+
+- SQL Server Management Studio (SSMS)
+  A tool to manage SQL Server databases—used to run queries, view data, manage tables, etc.
+
+## How to Run the Project
+
+1. Set Up Frontend:
+
+Install dependencies:
+`npm install`
+
+Run server:
+`npm run dev`
+By default, the React app should run on http://localhost:5173.
+
+2. Set Up the Backend (.NET)
+   Open the backend project in Visual Studio. Ensure your SQL Server is running. Update the database connection string in appsettings.json if needed. Build and run the backend by using the tools that Visual Studio provides.
+
+3. Set Up the Database
+   Open SSMS and connect to your SQL Server instance.
