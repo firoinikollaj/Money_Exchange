@@ -17,6 +17,8 @@ export default function AddEditCurrency() {
     const [existingCurrencies, setExistingCurrencies] = useState([]);
     const [selectedCurrencyCode, setSelectedCurrencyCode] = useState("");
     const [conversionRates, setConversionRates] = useState([]);
+    const [rateErrors, setRateErrors] = useState([]);
+
     const [isEditMode, setIsEditMode] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -47,6 +49,8 @@ export default function AddEditCurrency() {
                 }
             ]);
             setConversionRates(newPairs);
+            setRateErrors(newPairs.map(rate => rate.rate.trim() === ""));
+
         }
     }, [selectedCurrencyCode, isEditMode, existingCurrencies, allCurrencies]);
 
@@ -109,6 +113,8 @@ export default function AddEditCurrency() {
 
 
                     setConversionRates(pairs);
+                    setRateErrors(pairs.map(rate => String(rate.rate ?? "").trim() === ""));
+
                 } else {
                     const available = allRes.data.filter(ac => !existingRes.data.some(ec => ec.code === ac.code));
                     if (available.length === 0) return;
@@ -122,6 +128,8 @@ export default function AddEditCurrency() {
                     ]));
 
                     setConversionRates(pairs);
+                    setRateErrors(pairs.map(rate => rate.rate.trim() === ""));
+
                 }
 
             } catch (err) {
@@ -137,8 +145,14 @@ export default function AddEditCurrency() {
     const handleRateChange = (index, value) => {
         const updated = [...conversionRates];
         updated[index].rate = value;
+
+        const updatedErrors = [...rateErrors];
+        updatedErrors[index] = value.trim() === "";
+        setRateErrors(updatedErrors);
+
         setConversionRates(updated);
     };
+
 
     const handleSubmit = async () => {
 
@@ -181,6 +195,8 @@ export default function AddEditCurrency() {
     const availableDropdownOptions = isEditMode
         ? existingCurrencies.filter(c => c.code === selectedCurrencyCode)
         : allCurrencies.filter(ac => !existingCurrencies.some(ec => ec.code === ac.code));
+
+    const isFormValid = selectedCurrencyCode && conversionRates.every(rate => String(rate.rate ?? "").trim() !== "");
 
     return (
         <div className="bg-white rounded-xl shadow p-6 w-full max-w-3xl mx-auto">
@@ -225,7 +241,8 @@ export default function AddEditCurrency() {
                                 step="0.001"
                                 value={rate.rate}
                                 onChange={(e) => handleRateChange(idx, e.target.value)}
-                                className="flex-1 border rounded px-3 py-1 text-sm text-black bg-white"
+                                className={`flex-1 border px-3 py-1 text-sm text-black bg-white rounded 
+    ${rateErrors[idx] ? "border-red-500" : "border-gray-300"}`}
                                 required
                             />
                         </div>
@@ -246,7 +263,11 @@ export default function AddEditCurrency() {
 
                 <button
                     onClick={handleSubmit}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    disabled={!isFormValid}
+                    className={`inline-flex items-center gap-2 font-semibold px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
+        ${isFormValid
+                            ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white focus:ring-blue-500"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"}`}
                 >
                     {isEditMode ? "💾 Update Currency" : "➕ Add Currency"}
                 </button>
